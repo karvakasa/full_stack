@@ -20,20 +20,30 @@ const App = () => {
       {
         name: 'State of a component',
         exercises: 14
+      },
+      {
+        name: 'Moi päivö tää toimii vielki',
+        exercises: 5000000
       }
     ]
   }
   return (
     <div>
-    <Header course={course}/>
-    <Content parts={course.parts} />
-    <Total total={course.parts} />
+    <Course course={course} />
+    </div>
+  )
+}
+const Course = (props) => {
+  return(
+    <div>
+      <Header course={props.course}/>
+      <Content parts={props.course.parts}/>
+      <Total total={props.course.parts}/>
     </div>
   )
 }
 
 const Header = (props) => {
-  console.log(props.course.name)
   return (
   <div>
     <h1>
@@ -43,6 +53,7 @@ const Header = (props) => {
   )
 }
 const Content = ({ parts }) => {
+  console.log(parts)
   return (
     <div>
       {parts.map(part => <Part key={part.name} part={part.name} exercises={part.exercises}/>)}
@@ -50,11 +61,13 @@ const Content = ({ parts }) => {
   )
 }
 const Total = (props) => {
-  console.log('moi')
+  console.log(props.total)
+  var sumtotal = props.total.reduce((sum, part) => sum + part.exercises,0)
   return (
     <div>
       <p>
-      Number of exercises {props.total[0].exercises + props.total[1].exercises + props.total[2].exercises}
+      Number of exercises {sumtotal}
+      
       </p>
     </div>
   )
