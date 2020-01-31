@@ -22,6 +22,7 @@ const App = () => {
         event.preventDefault()
         return
       } 
+
       if (names.includes(newName)){
         window.alert(`${newName} is already added to phonebook`);
         event.preventDefault()
@@ -36,7 +37,7 @@ const App = () => {
         setPersons(persons.concat(dudeObject))
         setNewNumber('')
         setNewName('')
-    }
+      }
   }
 
   const handleDudeChange = (event) => {
@@ -56,7 +57,7 @@ const App = () => {
         <h2>add a new</h2>
           <Form addName={addName} newName={newName} handleDudeChange={handleDudeChange} newNumber={newNumber} handleNumberChange={handleNumberChange}/>
         <h2>Numbers</h2> 
-        <Map personsToShow={personsToShow}/>
+        <Persons personsToShow={personsToShow}/>
     </div>
   )
 }
@@ -80,22 +81,22 @@ const Form = ( props ) => {
   
   return (
     <form onSubmit={props.addName}>
-            name: 
-            <input value={props.newName} onChange={props.handleDudeChange}/>
-            <div></div>
-            number:
-            <input value={props.newNumber} onChange={props.handleNumberChange}/>
-            <br></br>
-            <button type="submit">add</button>
-        </form>
+      name: 
+      <input value={props.newName} onChange={props.handleDudeChange}/>
+      <div></div>
+      number:
+      <input value={props.newNumber} onChange={props.handleNumberChange}/>
+      <br></br>
+      <button type="submit">add</button>
+    </form>
   )
 }
-const Map = ( props ) => {
+const Persons = ( props ) => {
   return(
     <div>
       {props.personsToShow.map((person, i) => 
-            <Person key = {i} person={person} />
-          )}
+        <Person key = {i} person={person} />
+      )}
     </div>
   )
 }
