@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import personService from './services/persons'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -11,15 +11,13 @@ const App = () => {
   .filter(person => person.name.toLowerCase().includes(newFilter.toLowerCase()))
 
   useEffect(() => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
+    personService
+      .getAll()
       .then(response => {
-        console.log('promise fulfilled')
         setPersons(response.data)
       })
   }, [])
-  console.log('render', persons.length, 'notes')
+
 
   const addName = (event) => {
       var names = persons.map((person) => person.name)
@@ -40,6 +38,13 @@ const App = () => {
             number: newNumber,
             id: persons.length + 1
         }
+        personService
+      .create(dudeObject)
+      .then(response => {
+        setPersons(persons.concat(response.data))
+        
+      })
+
 
         setPersons(persons.concat(dudeObject))
         setNewNumber('')
@@ -56,6 +61,12 @@ const App = () => {
   const handleNumberChange = (event) => {
     setNewNumber(event.target.value)
   }
+  const removePerson = (person) => {
+    
+    if (window.confirm('delete', person.name)===true){
+      personService.remove(person.id)
+    }
+  }
  
   return (
     <div>
@@ -64,17 +75,11 @@ const App = () => {
         <h2>add a new</h2>
           <Form addName={addName} newName={newName} handleDudeChange={handleDudeChange} newNumber={newNumber} handleNumberChange={handleNumberChange}/>
         <h2>Numbers</h2> 
-        <Persons personsToShow={personsToShow}/>
+        <Persons personsToShow={personsToShow} removePerson={removePerson}/>
     </div>
   )
 }
-const Person = ({ person }) => {
-    return (
-        <div>
-            {person.name} {person.number}
-        </div>
-    )
-}
+
 const Filter = ( props ) => {
   
   return(
@@ -98,13 +103,26 @@ const Form = ( props ) => {
     </form>
   )
 }
+
 const Persons = ( props ) => {
   return(
     <div>
-      {props.personsToShow.map((person, i) => 
-        <Person key = {i} person={person} />
+      {props.personsToShow.map((person) => 
+        <Person key = {person.id} person={person} remove={props.removePerson}/>
+        
       )}
     </div>
+  )
+}
+const Person = ({ person, remove}) => {
+  return (
+      <div>
+        {person.name} {person.number}
+         <button onClick={() => remove(person)}>
+           delete
+            </button>
+      </div>
+      
   )
 }
 export default App
