@@ -1,25 +1,38 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import Axios from 'axios'
+
 
 const App = () => {
-  const [persons, setPersons] = useState([]) 
+  const [persons, setPersons] = useState([
+    { name: 'Arto Hellas', number: '040-123456' },
+    { name: 'Ada Lovelace', number: '39-44-5323523' },
+    { name: 'Dan Abramov', number: '12-43-234345' },
+    { name: 'Mary Poppendieck', number: '39-23-6423122' }
+  ]) 
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber] = useState('')
   const [ newFilter, setNewFilter ] = useState('')
+  const [countries, setCountries] = useState([{}])
+  
+  const hook = () => {
+    Axios.get('https://restcountries.eu/rest/v2/all')
+    .then(res => {
+      setCountries(res.data)
+    })
+  }
+    useEffect(hook, []);
 
   const personsToShow = persons
   .filter(person => person.name.toLowerCase().includes(newFilter.toLowerCase()))
 
-  useEffect(() => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('promise fulfilled')
-        setPersons(response.data)
-      })
-  }, [])
-  console.log('render', persons.length, 'notes')
+  const countriesToShow = countries
+  .filter(function(maa){
+    console.log()
+    if (newFilter === ''){
+      return (maa.name)
+    }
+    return (newFilter.includes(maa.name))
+  })
 
   const addName = (event) => {
       var names = persons.map((person) => person.name)
@@ -37,8 +50,7 @@ const App = () => {
         event.preventDefault()
         const dudeObject = {
             name: newName,
-            number: newNumber,
-            id: persons.length + 1
+            number: newNumber
         }
 
         setPersons(persons.concat(dudeObject))
@@ -58,44 +70,36 @@ const App = () => {
   }
  
   return (
+    
     <div>
-        <h2>Phonebook</h2>
           <Filter newFilter={newFilter} handleFilterChange={handleFilterChange}/>
-        <h2>add a new</h2>
-          <Form addName={addName} newName={newName} handleDudeChange={handleDudeChange} newNumber={newNumber} handleNumberChange={handleNumberChange}/>
-        <h2>Numbers</h2> 
-        <Persons personsToShow={personsToShow}/>
+          <Countrys countriesToShow={countriesToShow}/>
     </div>
   )
 }
-const Person = ({ person }) => {
-    return (
-        <div>
-            {person.name} {person.number}
-        </div>
-    )
+const Countrys = ( props ) => {
+  return (
+      <div>
+          {props.countriesToShow.map((country, i) => 
+            <Country key = {i} country={country}/>
+          )}
+      </div>
+  )
+}
+const Country = ({ country }) => {
+  return (
+    <div>
+      {country.name}
+    </div>
+  )
 }
 const Filter = ( props ) => {
   
   return(
     <div>
-            filter shown with
+            find countries 
             <input  value={props.newFilter} onChange={props.handleFilterChange}/>
     </div>
-  )
-}
-const Form = ( props ) => {
-  
-  return (
-    <form onSubmit={props.addName}>
-      name: 
-      <input value={props.newName} onChange={props.handleDudeChange}/>
-      <div></div>
-      number:
-      <input value={props.newNumber} onChange={props.handleNumberChange}/>
-      <br></br>
-      <button type="submit">add</button>
-    </form>
   )
 }
 const Persons = ( props ) => {
@@ -105,6 +109,13 @@ const Persons = ( props ) => {
         <Person key = {i} person={person} />
       )}
     </div>
+  )
+}
+const Person = ({ person }) => {
+  return (
+      <div>
+          {person.name} {person.number}
+      </div>
   )
 }
 export default App
