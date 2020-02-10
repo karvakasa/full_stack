@@ -44,6 +44,9 @@ const App = () => {
         setPersons(persons.concat(response.data))
         
       })
+      .catch(error => {
+        console.log(error.response.data)
+      })
 
 
         setPersons(persons.concat(dudeObject))
