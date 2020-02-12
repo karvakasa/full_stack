@@ -1,0 +1,9 @@
+POST http://localhost:3003/api/blogs/
+Content-Type: application/json
+
+{
+    "title": "Sooloilija",
+    "author": "045-1112223334",
+    "url": "www.toimiiOlenLoser.com",
+    "likes": 666
+}
