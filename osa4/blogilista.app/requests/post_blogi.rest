@@ -1,9 +1,11 @@
 POST http://localhost:3002/api/blogs/
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI1ZTRhYmU0MmQzYWYzOTA3YmZmZGFjMGIiLCJpYXQiOjE1ODE5NTY3MDR9.9TAQGTDAKqlMlIwXR-4Dzn2qdEdd8-dzidtMyJIiins
 
 {
-    "title": "toimitaas",
-    "author": "045-9992223334",
-    "url": "www.toimiiOlenLoser.com",
-    "likes": 666
+    "title": "runen broidii vittuttaa osasin debugata paremmin",
+    "author": "rip-meneKotiis",
+    "url": "www.jwtMalformattedSolved.com",
+    "likes": 69420,
+    "userId": "5e4abe42d3af3907bffdac0b"
 }
