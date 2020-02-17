@@ -49,4 +49,8 @@ describe('total likes', () => {
         const result = listHelper.favoriteBlog(blogs)
         expect(result).toBe(12)
     })
+    test('most blogs per person', () => {
+        const result = listHelper.mostBlogs(blogs)
+        expect(result).toBe(3, 'Robert C. Martin')
+    })
 })

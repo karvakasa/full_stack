@@ -26,10 +26,32 @@ const usersInDb = async () => {
     const users = await User.find({})
     return users.map(u => u.toJSON())
 }
+const mostBlogs = (blogs) => {
+    const authors = blogs.map(blog => blog.author)
+    let i = 0
+    let maxi = 0
+    let maxcount = 0
+    authors.forEach(author => {
+        let count = 0
+        blogs.forEach(blog => {
+            if (author === blog.author){
+                count++
+            }
+        })
+        if (count > maxcount){
+            maxcount = count
+            maxi = i
+        }
+        i++
+    })
+    return authors[maxi], maxi        
+}
+
   
 module.exports = {
     totalLikes,
     dummy,
     favoriteBlog,
-    usersInDb
+    usersInDb,
+    mostBlogs
 }
