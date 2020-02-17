@@ -1,11 +1,14 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
+const User = require('../models/user')
+
 
 blogsRouter.get('/', (request, response) => {
     Blog.find({}).then(blogs => {
         response.json(blogs.map(blog => blog.toJSON()))
     })
 })
+
 
 blogsRouter.get('/:id', (request, response, next) => {
     Blog.findById(request.params.id)
@@ -19,8 +22,10 @@ blogsRouter.get('/:id', (request, response, next) => {
         .catch(error => next(error))
 })
 
-blogsRouter.post('/', (request, response, next) => {
+blogsRouter.post('/', async (request, response, next) => {
     const body = request.body
+    const user = await User.findById(body.userId)
+
     if (!body.url){
         response.status(400).end()
     }
@@ -35,14 +40,15 @@ blogsRouter.post('/', (request, response, next) => {
         title: body.title,
         author: body.author,
         url: body.url,
-        likes: body.likes
+        likes: body.likes,
+        user: user._id
     })
 
-    blog.save()
-        .then(savedBlog => {
-            response.json(savedBlog.toJSON())
-        })
-        .catch(error => next(error))
+    const savedBlog = await blog.save()
+    user.blogs = user.blogs.concat(savedBlog._id)
+    await user.save()
+
+    response.json(savedblog.toJSON())
 })
 
 blogsRouter.delete('/:id', (request, response, next) => {
@@ -69,5 +75,6 @@ blogsRouter.put('/:id', (request, response, next) => {
         })
         .catch(error => next(error))
 })
+
 
 module.exports = blogsRouter
