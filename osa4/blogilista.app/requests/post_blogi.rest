@@ -1,11 +1,11 @@
 POST http://localhost:3002/api/blogs/
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI1ZTRhYmU0MmQzYWYzOTA3YmZmZGFjMGIiLCJpYXQiOjE1ODE5NTY3MDR9.9TAQGTDAKqlMlIwXR-4Dzn2qdEdd8-dzidtMyJIiins
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI1ZTRiZGRiMjQ1MTlhYTVhZDAzMDA5MDkiLCJpYXQiOjE1ODIwMzAzMTF9.lv5QQOfcvF89-6HAT8LCSAVKWSkoHlhUgbBrRi-ZaOs
 
 {
-    "title": "runen broidii vittuttaa osasin debugata paremmin",
-    "author": "rip-meneKotiis",
-    "url": "www.jwtMalformattedSolved.com",
+    "title": "Alkaaks matikka jo jännittää?",
+    "author": "rip-quickMaths",
+    "url": "www.matikkaOpettaa.com",
     "likes": 69420,
     "userId": "5e4abe42d3af3907bffdac0b"
 }
