@@ -3,9 +3,10 @@ import React from 'react'
 const Blog = ({ blog }) => {
   
   return (
-    <li className='blog'>
+    <div
+    className='blog'>
         {blog.title} {blog.author}
-    </li>
+    </div>
   )
 }
 
