@@ -3,7 +3,6 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
-import PropTypes from 'prop-types'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 
@@ -17,7 +16,6 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [errorType, setErrorType] = useState(null)
-  const [newView, setNewView] = useState(false)
 
   const blogFormRef = React.createRef()
 
@@ -100,32 +98,24 @@ const App = () => {
           onChange={({ target }) => setPassword(target.value)}
         />
       </div>
-      <button type="submit">login</button>
+      <button type="submit" id='login-button'>login</button>
     </form>
   )
-  loginForm.propTypes = {
-    handleSubmit: PropTypes.func.isRequired,
-    handleUsernameChange: PropTypes.func.isRequired,
-    handlePasswordChange: PropTypes.func.isRequired,
-    username: PropTypes.string.isRequired,
-    password: PropTypes.string.isRequired
-  }
-
   const logOut = () => {
     window.localStorage.clear()
     setUser(null)
   }
 
   const blogForm = () => (
-    <Togglable buttonLabel='new blog' ref={blogFormRef}>
+    <Togglable  ref={blogFormRef}>
       <BlogForm createBlog={addBlog} />
     </Togglable>
   )
-  const handleViewChange = () => {
-    setNewView(!newView)
-  }
-
-
+  const sortedBlogs = (blogs) => {
+    return blogs.sort(function (a,b){
+      return b.likes - a.likes
+    }
+    )}
   return (
     <div>
       <Notification message={errorMessage} type={errorType} />
@@ -145,8 +135,8 @@ const App = () => {
           </p>
           {blogForm()}
           <br></br>
-          {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} handleViewChange={handleViewChange}  />
+          {sortedBlogs(blogs).map(blog =>
+            <Blog key={blog.id} blog={blog} idUser={user.id} user={user} huser={user.name} blogs={blogs} setBlogs={setBlogs}/>
           )}
         </div>
       }

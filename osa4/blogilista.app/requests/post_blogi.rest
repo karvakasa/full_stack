@@ -1,11 +1,11 @@
-POST http://localhost:3002/api/blogs/
+POST http://localhost:3001/api/blogs/
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI1ZTRiZGRiMjQ1MTlhYTVhZDAzMDA5MDkiLCJpYXQiOjE1ODIwMzAzMTF9.lv5QQOfcvF89-6HAT8LCSAVKWSkoHlhUgbBrRi-ZaOs
 
 {
-    "title": "Alkaaks matikka jo jännittää?",
-    "author": "rip-quickMaths",
-    "url": "www.matikkaOpettaa.com",
+    "title": "timitko vieläkin kiitos",
+    "author": "rip-vesanelämä",
+    "url": "www.tirahajottaa.com",
     "likes": 69420,
     "userId": "5e4abe42d3af3907bffdac0b"
 }

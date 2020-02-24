@@ -1,6 +1,7 @@
 import React, { useState, useImperativeHandle } from 'react'
 
-const Togglable = React.forwardRef((props, ref) => {
+// eslint-disable-next-line react/display-name
+const Togglable = React.forwardRef((  props, ref  ) => {
   const [visible, setVisible] = useState(false)
 
   const hideWhenVisible = { display: visible ? 'none' : '' }
@@ -9,7 +10,7 @@ const Togglable = React.forwardRef((props, ref) => {
   const toggleVisibility = () => {
     setVisible(!visible)
   }
-  
+
   useImperativeHandle(ref, () => {
     return {
       toggleVisibility
@@ -19,11 +20,10 @@ const Togglable = React.forwardRef((props, ref) => {
   return (
     <div>
       <div style={hideWhenVisible}>
-        <button onClick={toggleVisibility}>{props.buttonLabel}</button>
+        <button onClick={toggleVisibility} type="submit" id='newblog-button'>{props.buttonLabel}new blog</button>
       </div>
       <div style={showWhenVisible}>
         {props.children}
-        <button onClick={toggleVisibility}>cancel</button>
       </div>
     </div>
   )
