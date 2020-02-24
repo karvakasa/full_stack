@@ -36,9 +36,6 @@ const App = () => {
     }
   }, [])
 
-
-
-
   const addBlog = (blogObject) => {
     blogFormRef.current.toggleVisibility()
 
