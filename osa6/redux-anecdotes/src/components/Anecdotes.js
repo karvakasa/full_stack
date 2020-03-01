@@ -4,7 +4,6 @@ import { voteAnecdote } from '../reducers/anecdoteReducer'
 import { anecdoteVote, clearNotification } from '../reducers/notificationReducer'
 
 const Anecdote = ({ anecdote, handleClick }) => {
-    
     return (
         <div key={anecdote.id}>
             <div>
@@ -26,7 +25,6 @@ const Anecdotes = () => {
         setTimeout(() => {
             dispatch(clearNotification())
         }, 5000)
-
     }
     return (
         <div>
@@ -41,5 +39,4 @@ const Anecdotes = () => {
         </div>
     )
 }
-
 export default Anecdotes

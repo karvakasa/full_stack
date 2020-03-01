@@ -15,7 +15,6 @@ const asObject = (anecdote) => {
   }
 }
 export const initialState = anecdotesAtStart.map(asObject)
-
 export const voteAnecdote = (id) => {
   console.log('id:',id)
   return {
