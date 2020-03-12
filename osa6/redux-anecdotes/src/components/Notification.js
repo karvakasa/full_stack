@@ -8,9 +8,8 @@ const Notification = () => {
   }
   return (
     <div style={style}>
-      render here notification...
+      jee
     </div>
   )
 }
-
 export default Notification
