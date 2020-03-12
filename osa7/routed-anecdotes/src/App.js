@@ -13,24 +13,9 @@ const Menu = () => {
       <div>
         <Link style={padding} to="/">anecdotes</Link>
         <Link style={padding} to="/create">create new</Link>
-        <Link style={padding} to="/about">about</Link>
+        <Link style={padding} to="/about" >about</Link>
       </div>
     
-  )
-}
-const svitser = () => {
-  return( 
-    <Switch>
-        <Route path="/create">
-          <CreateNew />
-        </Route>
-        <Route path="/about">
-          <About />
-        </Route>
-        <Route path="/">
-        
-        </Route>
-      </Switch>
   )
 }
 
@@ -97,7 +82,8 @@ const CreateNew = (props) => {
           url for more info
           <input name='info' value={info} onChange={(e)=> setInfo(e.target.value)} />
         </div>
-        <button>create</button>
+        <button>create
+        </button>
       </form>
     </div>
   )
@@ -148,12 +134,23 @@ const App = () => {
     <div>
       <h1>Software anecdotes</h1>
       <Menu />
-      <AnecdoteList anecdotes={anecdotes} />
-      <About />
-      <CreateNew addNew={addNew} />
-      <Footer />
     </div>
+    <Switch>
+        <Route path="/create">
+          <CreateNew />
+          <Footer/>
+        </Route>
+        <Route path="/about">
+          <About />
+          <Footer/>
+        </Route>
+        <Route path="/">
+          <AnecdoteList anecdotes={anecdotes}/>
+          <Footer/>
+        </Route>
+      </Switch>
     </Router>
+    
   )
 }
 
