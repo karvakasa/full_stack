@@ -1,32 +1,49 @@
 import React, { useState } from 'react'
+import  { useField } from './hooks'
 import {
   BrowserRouter as Router,
-  Switch, Route, Link
-  }from "react-router-dom"
+  Switch, Route, Link, useParams, 
+  useHistory}from "react-router-dom"
 
 const Menu = () => {
   const padding = {
     paddingRight: 5
   }
   return (
-    
       <div>
         <Link style={padding} to="/">anecdotes</Link>
         <Link style={padding} to="/create">create new</Link>
         <Link style={padding} to="/about" >about</Link>
       </div>
-    
+  )
+}
+const SingleAnecdote = ({ anecdotes }) => {
+  const id = useParams().id
+  const anecdote = anecdotes.find(n => n.id === id)
+  console.log(anecdote)
+  console.log(anecdote.content.value)
+  return (
+    <div>
+      <h2>{anecdote.content.value} by {anecdote.author.value}</h2>
+      <div><strong>has {anecdote.votes} votes</strong></div>
+    </div>
   )
 }
 
-const AnecdoteList = ({ anecdotes }) => (
+const AnecdoteList = ({ anecdotes, notification }) => {
+  return (
   <div>
+    {notification}
     <h2>Anecdotes</h2>
     <ul>
-      {anecdotes.map(anecdote => <li key={anecdote.id} >{anecdote.content}</li>)}
+      {anecdotes.map(anecdote =>
+         <li key={anecdote.id}>
+           <Link to={`/anecdote/${anecdote.id}`}>{anecdote.content.value}</Link>
+           </li>)}
     </ul>
   </div>
-)
+  )
+}
 
 const About = () => (
   <div>
@@ -51,38 +68,40 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
-  const [info, setInfo] = useState('')
+  const history = useHistory()
+  const content = useField('content')
+  const author = useField('author')
+  const info = useField('info')
 
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    props.addNew({
-      content,
-      author,
-      info,
-      votes: 0
-    })
+  const handleSubmit = (event) => {
+  event.preventDefault()
+  props.addNew({
+    content,
+    author,
+    info,
+    votes: 0
+  })
+  history.push('/')   
   }
-
+  const gigi = useField('')
   return (
     <div>
       <h2>create a new anecdote</h2>
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+          <input {...content} />
         </div>
         <div>
           author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+          <input name='author' {...author}/>
         </div>
         <div>
           url for more info
-          <input name='info' value={info} onChange={(e)=> setInfo(e.target.value)} />
+          <input name='info' {...info} />
         </div>
-        <button>create
+        <button>create</button>
+        <button onClick={gigi.nollaa}>reset
         </button>
       </form>
     </div>
@@ -112,7 +131,13 @@ const App = () => {
 
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0)
+    
     setAnecdotes(anecdotes.concat(anecdote))
+    setNotification(`a new anecdote ${anecdote.content.value} create!`)
+
+    setTimeout(() =>{
+      setNotification('')
+    }, 10000)
   }
 
   const anecdoteById = (id) =>
@@ -133,22 +158,24 @@ const App = () => {
     <Router>
     <div>
       <h1>Software anecdotes</h1>
+      
       <Menu />
     </div>
     <Switch>
-        <Route path="/create">
-          <CreateNew />
-          <Footer/>
-        </Route>
-        <Route path="/about">
-          <About />
-          <Footer/>
-        </Route>
-        <Route path="/">
-          <AnecdoteList anecdotes={anecdotes}/>
-          <Footer/>
-        </Route>
-      </Switch>
+      <Route path="/anecdote/:id">
+        <SingleAnecdote anecdotes={anecdotes}/>
+      </Route>
+      <Route path="/create">
+        <CreateNew addNew={addNew} setNotification={setNotification}/>
+      </Route>
+      <Route path="/about">
+        <About />
+      </Route>
+      <Route path="/">
+        <AnecdoteList anecdotes={anecdotes} notification={notification}/>
+      </Route>
+    </Switch>
+    <Footer/>
     </Router>
     
   )
