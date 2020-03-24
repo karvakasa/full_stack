@@ -17,6 +17,9 @@ const Menu = () => {
       </div>
   )
 }
+
+
+
 const SingleAnecdote = ({ anecdotes }) => {
   const id = useParams().id
   const anecdote = anecdotes.find(n => n.id === id)
