@@ -1,7 +1,8 @@
-const { ApolloServer, gql } = require('apollo-server')
+const { ApolloServer } = require('@apollo/server')
+const { startStandaloneServer } = require('@apollo/server/standalone')
 
-const authors = [
 
+let authors = [
   {
     name: 'Robert Martin',
     id: "afa51ab0-344d-11e9-a414-719c6709cf3e",
@@ -28,11 +29,20 @@ const authors = [
 ]
 
 /*
+ * Suomi:
  * Saattaisi olla järkevämpää assosioida kirja ja sen tekijä tallettamalla kirjan yhteyteen tekijän nimen sijaan tekijän id
  * Yksinkertaisuuden vuoksi tallennamme kuitenkin kirjan yhteyteen tekijän nimen
+ *
+ * English:
+ * It might make more sense to associate a book with its author by storing the author's id in the context of the book instead of the author's name
+ * However, for simplicity, we will store the author's name in connection with the book
+ *
+ * Spanish:
+ * Podría tener más sentido asociar un libro con su autor almacenando la id del autor en el contexto del libro en lugar del nombre del autor
+ * Sin embargo, por simplicidad, almacenaremos el nombre del autor en conexión con el libro
 */
 
-const books = [
+let books = [
   {
     title: 'Clean Code',
     published: 2008,
@@ -76,7 +86,7 @@ const books = [
     genres: ['classic', 'crime']
   },
   {
-    title: 'The Demon ',
+    title: 'Demons',
     published: 1872,
     author: 'Fyodor Dostoevsky',
     id: "afa5de04-344d-11e9-a414-719c6709cf3e",
@@ -84,31 +94,35 @@ const books = [
   },
 ]
 
-const typeDefs = gql`
-  type Author {
-    name: String!
-    id: ID!
-    born: String
-  }
+/*
+  you can remove the placeholder query once your first one has been implemented 
+*/
+
+const typeDefs = `
   type Book {
-      title: String!
-      published: Int!
-      author: Author!
-      genres: [String!]!
+    title: String!,
+    published: Int!,
+    author: String!,
+    id: ID!,
+    genres: [String]!
   }
+
   type Query {
-  authorCount: Int!
-  allAuthors: [Author!]!
-  findAuthor(name: string!): Author
+    booksCount: Int!
+    authorCount: Int!
+  }
+
+  type Author {
+    name: String!,
+    id: ID!,
+    born: Int!
   }
 `
 
 const resolvers = {
   Query: {
-      authorCount: () => authors.length,
-      allAuthors: () => authors,
-      findAuthor: (root, args) =>
-      authors.find(a => a.name === args.name)
+    booksCount: () => books.length,
+    authorCount: () => authors.length
   }
 }
 
@@ -117,6 +131,8 @@ const server = new ApolloServer({
   resolvers,
 })
 
-server.listen().then(({ url }) => {
+startStandaloneServer(server, {
+  listen: { port: 4000 },
+}).then(({ url }) => {
   console.log(`Server ready at ${url}`)
 })
